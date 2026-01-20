@@ -1,42 +1,61 @@
 Summary:	Vimscript grammar for tree-sitter
+Summary(pl.UTF-8):	Gramatyka skryptów Vima dla tree-sittera
 Name:		tree-sitter-vim
-Version:	0.4.0
+Version:	0.7.0
 Release:	1
 License:	MIT
 Group:		Libraries
+#Source0Download: https://github.com/tree-sitter-grammars/tree-sitter-vim/releases
 Source0:	https://github.com/neovim/tree-sitter-vim/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	8f3d1c3319673e20b83da6c23962dc45
+# Source0-md5:	c267a0b056214551b5739b8693b6750d
 URL:		https://github.com/neovim/tree-sitter-vim
+# c11
+BuildRequires:	gcc >= 6:4.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		ts_vim_soname	libtree-sitter-vim.so.0
+%define		soname_ver	0
 
 %description
 A tree-sitter parser for Vimscript files.
 
+%description -l pl.UTF-8
+Gramatyka skryptów Vima dla tree-sittera.
+
 %package devel
 Summary:	Header files for tree-sitter-vim
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki tree-sitter-vim
 Group:		Development/Libraries
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Header files for tree-sitter-vim.
 
+%description devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki tree-sitter-vim.
+
 %package static
 Summary:	Static tree-sitter-vim library
+Summary(pl.UTF-8):	Statyczna biblioteka tree-sitter-vim
 Group:		Development/Libraries
 Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 
 %description static
 Static tree-sitter-vim library.
 
+%description static -l pl.UTF-8
+Statyczna biblioteka tree-sitter-vim.
+
 %package -n neovim-parser-vim
-Summary:	Vim help files parser for Neovim
+Summary:	Vim script files parser for Neovim
+Summary(pl.UTF-8):	Analizator składni skryptów Vima dla Neovima
 Group:		Applications/Editors
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description -n neovim-parser-vim
-Vim help files parser for Neovim.
+Vim script files parser for Neovim.
+
+%description -n neovim-parser-vim -l pl.UTF-8
+Analizator składni skryptów Vima dla Neovima.
 
 %prep
 %setup -q
@@ -53,7 +72,6 @@ Vim help files parser for Neovim.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT%{_libdir}/nvim/parser
 
 %{__make} install \
@@ -63,7 +81,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/nvim/parser
 	LIBDIR="%{_libdir}" \
 	PCLIBDIR="%{_pkgconfigdir}"
 
-%{__ln_s} %{_libdir}/%{ts_vim_soname} $RPM_BUILD_ROOT%{_libdir}/nvim/parser/vim.so
+%{__ln_s} ../../libtree-sitter-vim.so.%{soname_ver} $RPM_BUILD_ROOT%{_libdir}/nvim/parser/vim.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,12 +92,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE README.md
-%attr(755,root,root) %{_libdir}/libtree-sitter-vim.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/%{ts_vim_soname}
+%{_libdir}/libtree-sitter-vim.so.*.*
+%ghost %{_libdir}/libtree-sitter-vim.so.%{soname_ver}
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtree-sitter-vim.so
+%{_libdir}/libtree-sitter-vim.so
 %{_includedir}/tree_sitter/tree-sitter-vim.h
 %{_pkgconfigdir}/tree-sitter-vim.pc
 
