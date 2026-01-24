@@ -17,8 +17,9 @@ URL:		https://github.com/neovim/tree-sitter-vim
 BuildRequires:	gcc >= 6:4.7
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.8
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools >= 1:42
 BuildRequires:	python3-wheel
+BuildRequires:	rpmbuild(macros) >= 1.714
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -70,7 +71,7 @@ Analizator składni skryptów Vima dla Neovima.
 Summary:	Vim script files parser for Python
 Summary(pl.UTF-8):	Analizator składni skryptów Vima dla Pythona
 Group:		Libraries/Python
-Requires:	python3-tree-sitter
+Requires:	python3-tree-sitter >= 0.21
 
 %description -n python3-tree-sitter-vim
 Vim script files parser for Python.
